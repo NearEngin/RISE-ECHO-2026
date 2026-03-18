@@ -684,8 +684,8 @@
                 <div class="planet-node node-cyber"></div>
                 <div class="content-box">
                     <h3>Cyber Security</h3>
-                    <p class="sub-label">Competition</p>
-                    <button class="btn-register-timeline" onclick="openRegPopup(0)">Register Now</button>
+                    <p class="sub-label">Workshop</p>
+                    <button class="btn-register-timeline" onclick="scrollToEvents()">Register Now</button>
                 </div>
             </div>
 
@@ -695,8 +695,8 @@
                 <div class="planet-node node-webdev"></div>
                 <div class="content-box">
                     <h3>Web Development</h3>
-                    <p class="sub-label">Competition</p>
-                    <button class="btn-register-timeline" onclick="openRegPopup(1)">Register Now</button>
+                    <p class="sub-label">Workshop</p>
+                    <button class="btn-register-timeline" onclick="scrollToEvents()">Register Now</button>
                 </div>
             </div>
 
@@ -706,8 +706,8 @@
                 <div class="planet-node node-linefollower"></div>
                 <div class="content-box">
                     <h3>Line Follower Robot</h3>
-                    <p class="sub-label">Robotics Competition</p>
-                    <button class="btn-register-timeline" onclick="openRegPopup(2)">Register Now</button>
+                    <p class="sub-label">Workshop</p>
+                    <button class="btn-register-timeline" onclick="scrollToEvents()">Register Now</button>
                 </div>
             </div>
 
@@ -729,7 +729,7 @@
                 <div class="content-box">
                     <h3>Hackathon</h3>
                     <p class="sub-label">24-Hour coding marathon begins</p>
-                    <button class="btn-register-timeline" onclick="openRegPopup(4)">Register Now</button>
+                    <button class="btn-register-timeline" onclick="scrollToEvents()">Register Now</button>
                 </div>
             </div>
         </div>
@@ -740,7 +740,7 @@
         <div class="planet-timeline">
             <div class="timeline-line"></div>
 
-            <!-- Mini Project Expo (Morning) -->
+            <!-- Mini Project Expo -->
             <div class="timeline-item">
                 <div class="time-box">Morning</div>
                 <div class="planet-node node-miniproject"></div>
@@ -757,7 +757,7 @@
                 <div class="content-box">
                     <h3>Business Proposal</h3>
                     <p class="sub-label">Pitch your startup idea</p>
-                    <button class="btn-register-timeline" onclick="openRegPopup(6)">Register Now</button>
+                    <button class="btn-register-timeline" onclick="scrollToEvents()">Register Now</button>
                 </div>
             </div>
 
@@ -768,7 +768,7 @@
                 <div class="content-box">
                     <h3>Circuit Competition</h3>
                     <p class="sub-label">Electronics design challenge</p>
-                    <button class="btn-register-timeline" onclick="openRegPopup(7)">Register Now</button>
+                    <button class="btn-register-timeline" onclick="scrollToEvents()">Register Now</button>
                 </div>
             </div>
 
@@ -879,19 +879,22 @@
         const eventsData = [
             {
                 id: 0, title: 'Cyber Security', day: 'Day 1 – Forenoon', time: 'Forenoon', fee: 'TBA',
-                desc: 'Dive into the world of ethical hacking, CTF challenges, and network defense in a high-stakes competition environment. Prove your skills in identifying vulnerabilities and securing systems before the clock runs out.',
+                formUrl: 'https://forms.gle/rZZtTzkA2kxKrj3t9',
+                desc: 'Gain hands-on experience in ethical hacking, CTF challenges, and network defense guided by industry experts. Learn to identify vulnerabilities and secure systems in a practical, engaging workshop environment.',
                 gradient: 'linear-gradient(135deg, #00e5ff, #0072ff)',
                 iconSvg: `<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`
             },
             {
                 id: 1, title: 'Web Development', day: 'Day 1 – Forenoon', time: 'Forenoon', fee: 'TBA',
-                desc: 'Design and build a fully functional, visually stunning website within a tight time limit. Creativity, responsiveness, and clean code will be judged by a panel of industry experts.',
+                formUrl: 'https://forms.gle/PjpaN1MwVZx9Uvb17',
+                desc: 'Learn to design and build modern, responsive websites through guided hands-on sessions led by experienced developers. Walk away with practical skills in HTML, CSS, JavaScript, and the tools that power the web today.',
                 gradient: 'linear-gradient(135deg, #38ef7d, #11998e)',
                 iconSvg: `<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>`
             },
             {
                 id: 2, title: 'Line Follower Robot', day: 'Day 1 – Forenoon', time: 'Forenoon', fee: 'TBA',
-                desc: 'Build an autonomous robot capable of navigating a track by detecting and following a line with precision. The fastest and most accurate bot to complete the course without going off-track wins.',
+                formUrl: 'https://forms.gle/TwEjErLufD9kNk356',
+                desc: 'Get a practical introduction to robotics by building and programming a line-following robot from scratch. This workshop covers sensors, microcontrollers, and autonomous navigation in a fun, beginner-friendly format.',
                 gradient: 'linear-gradient(135deg, #ff416c, #ff4b2b)',
                 iconSvg: `<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16"/><line x1="16" y1="16" x2="16" y2="16"/></svg>`
             },
@@ -943,6 +946,10 @@
             document.getElementById("brochure").scrollIntoView({ behavior: 'smooth' });
         }
 
+        function scrollToEvents() {
+            document.getElementById("events").scrollIntoView({ behavior: 'smooth' });
+        }
+
         /* === STARFIELD === */
         const canvas = document.getElementById("stars");
         const ctx = canvas.getContext("2d");
@@ -981,15 +988,19 @@
             const grid = document.getElementById('eventsGrid');
             grid.innerHTML = '';
             eventsData.forEach((ev, index) => {
+                if (ev.id === 3 || ev.id === 5) return; // skip expos
                 const card = document.createElement('div');
                 card.className = 'event-card';
+                const registerBtn = ev.formUrl
+                    ? `<a href="${ev.formUrl}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()"><button class="btn-register-card">Register</button></a>`
+                    : `<button class="btn-register-card" onclick="openRegPopup(${index}); event.stopPropagation();">Register</button>`;
                 card.innerHTML = `
                     <div class="card-cover" style="background: ${ev.gradient}">${ev.iconSvg}</div>
                     <div class="card-body">
                         <h3>${ev.title}</h3>
                         <p class="card-meta">${ev.day}</p>
                         <p class="card-desc">${ev.desc}</p>
-                        ${(ev.id !== 3 && ev.id !== 5) ? `<button class="btn-register-card" onclick="openRegPopup(${index}); event.stopPropagation();">Register</button>` : ''}
+                        ${registerBtn}
                     </div>
                 `;
                 card.addEventListener('click', () => openEventModal(index));
@@ -1023,6 +1034,12 @@
             document.getElementById('modalFee').innerText = '🎟️ ' + ev.fee;
             document.getElementById('modalDesc').innerText = ev.desc;
             document.getElementById('modalRegBtn').style.display = (ev.id === 3 || ev.id === 5) ? 'none' : 'block';
+            const regBtn = document.getElementById('modalRegBtn');
+            if (ev.formUrl) {
+                regBtn.onclick = () => window.open(ev.formUrl, '_blank');
+            } else {
+                regBtn.onclick = () => openRegPopup(currentModalIdx);
+            }
         }
 
         /* === REGISTRATION === */
