@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RISE Techfest by ECHO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+
+        body {
+            background: #02030a;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* === LOADER === */
+        #loader {
+            position: fixed;
+            width: 100%;
+            height: 100vh;
+            background: #02030a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            transition: opacity 0.5s ease;
+        }
+
+        .loader-logo {
+            width: 120px;
+            height: auto;
+            animation: pulse 1.5s infinite alternate;
+            object-fit: contain;
+        }
+
+        #loaderTextFallback {
+            display: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 50px;
+            color: #ff8c00;
+            animation: pulse 1.5s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(255, 140, 0, 0.5)); }
+            100% { transform: scale(1.15); filter: drop-shadow(0 0 25px rgba(255, 140, 0, 1)); }
+        }
+
+        #loader h2 {
+            margin-top: 25px;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 2px;
+            color: #ff8c00;
+        }
+
+        /* === STARFIELD === */
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            filter: blur(1.5px);
+        }
+
+        /* === NAVBAR === */
+        nav {
+            position: fixed;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            background: rgba(2, 3, 10, 0.7);
+            backdrop-filter: blur(15px);
+            z-index: 100;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .brand { display: flex; align-items: center; gap: 15px; }
+
+        .nav-logo { height: 40px; width: auto; object-fit: contain; }
+
+        .brand h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            background: linear-gradient(45deg, #ff8c00, #ff0066);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav ul { display: flex; gap: 25px; list-style: none; }
+
+        nav a { text-decoration: none; color: #ccc; font-weight: 400; transition: color 0.3s; }
+        nav a:hover { color: #ff8c00; }
+
+        /* === HERO === */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 8vw;
+            line-height: 1.1;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            text-shadow: 0 0 20px rgba(255, 140, 0, 0.3);
+        }
+
+        .hero p { font-size: 1.2rem; color: #bbb; margin-bottom: 30px; }
+
+        .primary-btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            background: linear-gradient(45deg, #ff8c00, #ff0066);
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(255, 140, 0, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .primary-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px rgba(255, 140, 0, 0.5);
+        }
+
+        /* === PLANETS === */
+        .planet { position: fixed; border-radius: 50%; z-index: -1; opacity: 0.75; pointer-events: none; will-change: transform; filter: blur(2px); }
+
+        .planet1 {
+            width: 200px; height: 200px;
+            top: 10%; left: 3%;
+            background: radial-gradient(circle at 35% 35%, #ff9a4a, #c94a00 55%, #7a2500);
+            box-shadow:
+                0 0 60px rgba(255, 106, 0, 0.3),
+                inset -30px -20px 60px rgba(0,0,0,0.6),
+                inset 10px 10px 30px rgba(255,180,80,0.2);
+        }
+
+        .planet2 {
+            width: 140px; height: 140px;
+            top: 50%; right: 3%;
+            background: radial-gradient(circle at 35% 35%, #4fc3f7, #0072ff 55%, #001a4a);
+            box-shadow:
+                0 0 50px rgba(0, 157, 255, 0.3),
+                inset -20px -15px 50px rgba(0,0,0,0.6),
+                inset 8px 8px 25px rgba(100,200,255,0.2);
+        }
+
+        /* === SECTIONS === */
+        section {
+            padding: 100px 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 36px;
+            text-align: center;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 60px;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* === DAY LABEL === */
+        .day-label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #ff8c00;
+            text-align: center;
+            margin: 60px 0 30px;
+            position: relative;
+        }
+
+        .day-label::before,
+        .day-label::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 25%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(255,140,0,0.4));
+        }
+
+        .day-label::before { right: calc(50% + 80px); }
+        .day-label::after { left: calc(50% + 80px); background: linear-gradient(to left, transparent, rgba(255,140,0,0.4)); }
+
+        /* === PLANET TIMELINE === */
+        .planet-timeline {
+            position: relative;
+            max-width: 820px;
+            margin: 0 auto 80px auto;
+            padding: 20px 0;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, #ff8c00, #009dff, #8e2de2);
+            transform: translateX(-50%);
+            z-index: 1;
+            border-radius: 2px;
+            box-shadow: 0 0 10px rgba(255, 140, 0, 0.5);
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 44px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .time-box {
+            flex: 1;
+            text-align: right;
+            padding-right: 40px;
+            font-family: 'Orbitron', sans-serif;
+            color: #ff8c00;
+            font-size: 0.95rem;
+            text-shadow: 0 0 10px rgba(255,140,0,0.3);
+        }
+
+        .content-box {
+            flex: 1;
+            text-align: left;
+            padding-left: 40px;
+        }
+
+        .content-box h3 {
+            font-size: 1.2rem;
+            margin-bottom: 3px;
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .content-box .sub-label {
+            color: #666;
+            font-size: 0.8rem;
+            margin-bottom: 6px;
+        }
+
+        .planet-node {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            position: relative;
+            border: 2px solid rgba(255,255,255,0.1);
+        }
+
+        /* Planet node colors */
+        .node-inauguration { background: radial-gradient(circle at 30% 30%, #ffd700, #ff8c00); box-shadow: 0 0 25px rgba(255,215,0,0.6); }
+        .node-cyber        { background: radial-gradient(circle at 30% 30%, #00e5ff, #0072ff); box-shadow: 0 0 25px rgba(0,229,255,0.6); }
+        .node-webdev       { background: radial-gradient(circle at 30% 30%, #38ef7d, #11998e); box-shadow: 0 0 25px rgba(56,239,125,0.6); }
+        .node-linefollower { background: radial-gradient(circle at 30% 30%, #ff416c, #ff4b2b); box-shadow: 0 0 25px rgba(255,65,108,0.6); }
+        .node-expo         { background: radial-gradient(circle at 30% 30%, #f7b733, #d35400); box-shadow: 0 0 25px rgba(247,183,51,0.6); }
+        .node-hackathon    { background: radial-gradient(circle at 30% 30%, #c471f5, #fa71cd); box-shadow: 0 0 25px rgba(196,113,245,0.6); }
+        .node-break        { background: radial-gradient(circle at 30% 30%, #555, #222); box-shadow: 0 0 15px rgba(100,100,100,0.3); }
+        .node-miniproject  { background: radial-gradient(circle at 30% 30%, #ffd700, #ff8c00); box-shadow: 0 0 25px rgba(255,215,0,0.6); }
+        .node-business     { background: radial-gradient(circle at 30% 30%, #00c6ff, #0072ff); box-shadow: 0 0 25px rgba(0,198,255,0.6); }
+        .node-circuit      { background: radial-gradient(circle at 30% 30%, #ff416c, #ff4b2b); box-shadow: 0 0 25px rgba(255,65,108,0.6); }
+        .node-valedictory  { background: radial-gradient(circle at 30% 30%, #8e2de2, #4a00e0); box-shadow: 0 0 25px rgba(142,45,226,0.6); }
+
+        .btn-register-timeline {
+            background: linear-gradient(45deg, #ff8c00, #ff0066);
+            border: none;
+            padding: 7px 20px;
+            border-radius: 20px;
+            color: white;
+            font-size: 0.82rem;
+            font-weight: 600;
+            margin-top: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 5px 15px rgba(255, 140, 0, 0.3);
+        }
+
+        .btn-register-timeline:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 140, 0, 0.5);
+        }
+
+        /* === PARALLEL BADGE === */
+        .parallel-badge {
+            display: inline-block;
+            background: rgba(255,140,0,0.12);
+            border: 1px solid rgba(255,140,0,0.3);
+            color: #ff8c00;
+            font-size: 0.7rem;
+            padding: 2px 10px;
+            border-radius: 20px;
+            margin-bottom: 6px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* === EVENT CARDS GRID (replaces carousel) === */
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 50px;
+        }
+
+        .event-card {
+            background: rgba(20, 20, 30, 0.85);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 18px;
+            overflow: hidden;
+            transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .event-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(255,140,0,0.4);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+        }
+
+        .card-cover {
+            height: 130px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-body {
+            padding: 22px;
+        }
+
+        .card-body h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 16px;
+            margin-bottom: 6px;
+        }
+
+        .card-meta {
+            color: #666;
+            font-size: 12px;
+            margin-bottom: 14px;
+        }
+
+        .btn-register-card {
+            background: linear-gradient(45deg, #ff8c00, #ff0066);
+            border: none;
+            padding: 10px 0;
+            border-radius: 20px;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            width: 100%;
+            transition: opacity 0.3s, transform 0.2s;
+        }
+
+        .btn-register-card:hover { opacity: 0.88; transform: scale(1.02); }
+
+        /* === EVENT DETAILS MODAL === */
+        .event-modal {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100vh;
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(15px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .event-modal.active { display: flex; opacity: 1; }
+
+        .event-modal-content {
+            background: #111218;
+            width: 90%;
+            max-width: 560px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+        }
+
+        .modal-header {
+            padding: 20px;
+            text-align: right;
+            position: absolute;
+            top: 0; right: 0;
+            width: 100%;
+            z-index: 10;
+        }
+
+        .close-btn {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            font-size: 24px;
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .close-btn:hover { background: #ff0066; }
+
+        .swipe-area { display: flex; flex-direction: column; animation: fadeIn 0.3s ease; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-cover {
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 -20px 50px rgba(0,0,0,0.5);
+        }
+
+        .modal-body { padding: 28px 30px; text-align: center; }
+
+        .modal-body h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .event-meta {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+            color: #ff8c00;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .event-desc {
+            color: #ccc;
+            line-height: 1.6;
+            margin-bottom: 22px;
+            font-size: 14px;
+        }
+
+        /* === REGISTRATION FORM === */
+        .reg-popup {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100vh;
+            background: rgba(0,0,0,0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1100;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .reg-popup.active { display: flex; opacity: 1; }
+
+        .form-card {
+            background: #15161e;
+            padding: 40px 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            border: 1px solid rgba(255,140,0,0.3);
+            position: relative;
+        }
+
+        .form-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #ff8c00;
+        }
+
+        .form-group { margin-bottom: 15px; display: flex; flex-direction: column; }
+
+        .form-group input {
+            padding: 15px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus { border-color: #ff8c00; }
+
+        .error-msg { color: #ff4757; font-size: 13px; margin-top: 5px; display: none; }
+
+        .form-actions { display: flex; gap: 15px; margin-top: 25px; }
+
+        .btn-submit {
+            flex: 1;
+            background: linear-gradient(45deg, #ff8c00, #ff0066);
+            border: none; padding: 15px; border-radius: 30px;
+            color: white; font-weight: 600; cursor: pointer; transition: opacity 0.3s;
+        }
+
+        .btn-submit:hover { opacity: 0.9; }
+
+        .btn-back {
+            flex: 1;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 15px; border-radius: 30px;
+            color: white; font-weight: 600; cursor: pointer; transition: background 0.3s;
+        }
+
+        .btn-back:hover { background: rgba(255,255,255,0.1); }
+
+        /* === CONTACT === */
+        #contact {
+            background: linear-gradient(to bottom, transparent, rgba(20,20,30,0.8));
+            border-top: 1px solid rgba(255,255,255,0.05);
+            text-align: center;
+        }
+
+        .coordinators-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .coord-card {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,140,0,0.2);
+            border-radius: 15px;
+            padding: 30px;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .coord-card:hover { transform: translateY(-5px); border-color: #ff8c00; }
+
+        .coord-card h3 { font-family: 'Orbitron', sans-serif; font-size: 20px; margin-bottom: 5px; }
+        .coord-card p { color: #aaa; font-size: 14px; margin-bottom: 20px; }
+
+        .coord-phone {
+            display: inline-block;
+            background: rgba(255,140,0,0.1);
+            color: #ff8c00;
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .coord-phone:hover { background: #ff8c00; color: white; }
+
+        /* === NOTIFICATION === */
+        #notification {
+            position: fixed;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2ed573;
+            color: #111;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            z-index: 9999;
+            transition: bottom 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 10px 20px rgba(46,213,115,0.3);
+            white-space: nowrap;
+        }
+
+        #notification.show { bottom: 30px; }
+
+        /* === MOBILE === */
+        @media(max-width: 768px) {
+            nav { padding: 15px 20px; }
+            nav ul { gap: 15px; display: none; }
+            .hero h1 { font-size: 12vw; }
+
+            .timeline-line { left: 38px; transform: translateX(0); }
+            .timeline-item { flex-direction: column; align-items: flex-start; padding-left: 88px; margin-bottom: 36px; }
+            .time-box { text-align: left; padding-right: 0; margin-bottom: 4px; }
+            .content-box { padding-left: 0; }
+            .planet-node { position: absolute; left: 10px; top: 0; width: 56px; height: 56px; }
+
+            .day-label::before, .day-label::after { width: 15%; }
+
+            .events-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LOADER -->
+    <div id="loader">
+        <img src="echologo.png" alt="ECHO Logo" class="loader-logo"
+             onerror="this.style.display='none'; document.getElementById('loaderTextFallback').style.display='block';">
+        <div id="loaderTextFallback">ECHO</div>
+        <h2>Launching RISE</h2>
+    </div>
+
+    <!-- STARFIELD -->
+    <canvas id="stars"></canvas>
+
+    <!-- PLANETS -->
+    <div class="planet planet1"></div>
+    <div class="planet planet2"></div>
+
+    <!-- NAVBAR -->
+    <nav>
+        <div class="brand">
+            <img src="echologo.png" alt="ECHO Logo" class="nav-logo" onerror="this.style.display='none'">
+            <h2>RISE</h2>
+        </div>
+        <ul>
+            <li><a href="#brochure">Brochure</a></li>
+            <li><a href="#events">Events</a></li>
+            <li><a href="#contact">Connect With Us</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <h1>RISE TECHFEST</h1>
+        <p>Explore Innovation Beyond Earth with ECHO</p>
+        <button class="primary-btn" onclick="scrollBrochure()">Explore Events</button>
+    </section>
+
+    <!-- BROCHURE / TIMELINE SECTION -->
+    <section id="brochure">
+        <h2 class="title">Mission Brochure</h2>
+        <p class="section-subtitle">Two Days of Innovation, Competition &amp; Discovery</p>
+
+        <!-- DAY 1 -->
+        <div class="day-label">Day 1</div>
+
+        <div class="planet-timeline">
+            <div class="timeline-line"></div>
+
+            <!-- Cyber Security -->
+            <div class="timeline-item">
+                <div class="time-box">Forenoon</div>
+                <div class="planet-node node-cyber"></div>
+                <div class="content-box">
+                    <h3>Cyber Security</h3>
+                    <p class="sub-label">Competition</p>
+                    <button class="btn-register-timeline" onclick="openRegPopup(0)">Register Now</button>
+                </div>
+            </div>
+
+            <!-- Web Development -->
+            <div class="timeline-item">
+                <div class="time-box">Forenoon</div>
+                <div class="planet-node node-webdev"></div>
+                <div class="content-box">
+                    <h3>Web Development</h3>
+                    <p class="sub-label">Competition</p>
+                    <button class="btn-register-timeline" onclick="openRegPopup(1)">Register Now</button>
+                </div>
+            </div>
+
+            <!-- Line Follower Robot -->
+            <div class="timeline-item">
+                <div class="time-box">Forenoon</div>
+                <div class="planet-node node-linefollower"></div>
+                <div class="content-box">
+                    <h3>Line Follower Robot</h3>
+                    <p class="sub-label">Robotics Competition</p>
+                    <button class="btn-register-timeline" onclick="openRegPopup(2)">Register Now</button>
+                </div>
+            </div>
+
+            <!-- Main Project Expo (parallel) -->
+            <div class="timeline-item">
+                <div class="time-box">Afternoon</div>
+                <div class="planet-node node-expo"></div>
+                <div class="content-box">
+                    <span class="parallel-badge">Parallel Event</span>
+                    <h3>Main Project Expo</h3>
+                    <p class="sub-label">Running parallel to afternoon workshops</p>
+                </div>
+            </div>
+
+            <!-- Hackathon -->
+            <div class="timeline-item">
+                <div class="time-box">5:00 PM</div>
+                <div class="planet-node node-hackathon"></div>
+                <div class="content-box">
+                    <h3>Hackathon</h3>
+                    <p class="sub-label">24-Hour coding marathon begins</p>
+                    <button class="btn-register-timeline" onclick="openRegPopup(4)">Register Now</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- DAY 2 -->
+        <div class="day-label">Day 2</div>
+
+        <div class="planet-timeline">
+            <div class="timeline-line"></div>
+
+            <!-- Mini Project Expo (Morning) -->
+            <div class="timeline-item">
+                <div class="time-box">Morning</div>
+                <div class="planet-node node-miniproject"></div>
+                <div class="content-box">
+                    <h3>Mini Project Expo</h3>
+                    <p class="sub-label">Showcase your innovations</p>
+                </div>
+            </div>
+
+            <!-- Business Proposal -->
+            <div class="timeline-item">
+                <div class="time-box">Afternoon</div>
+                <div class="planet-node node-business"></div>
+                <div class="content-box">
+                    <h3>Business Proposal</h3>
+                    <p class="sub-label">Pitch your startup idea</p>
+                    <button class="btn-register-timeline" onclick="openRegPopup(6)">Register Now</button>
+                </div>
+            </div>
+
+            <!-- Circuit Competition -->
+            <div class="timeline-item">
+                <div class="time-box">Afternoon</div>
+                <div class="planet-node node-circuit"></div>
+                <div class="content-box">
+                    <h3>Circuit Competition</h3>
+                    <p class="sub-label">Electronics design challenge</p>
+                    <button class="btn-register-timeline" onclick="openRegPopup(7)">Register Now</button>
+                </div>
+            </div>
+
+            <!-- Valedictory -->
+            <div class="timeline-item">
+                <div class="time-box">Evening</div>
+                <div class="planet-node node-valedictory"></div>
+                <div class="content-box">
+                    <h3>Valedictory Function</h3>
+                    <p class="sub-label">Prize distribution &amp; closing ceremony</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EVENTS GRID SECTION -->
+    <section id="events">
+        <h2 class="title">Explore Events</h2>
+        <p class="section-subtitle">Click any event to learn more and register</p>
+
+        <div class="events-grid" id="eventsGrid">
+            <!-- Populated by JS -->
+        </div>
+    </section>
+
+    <!-- EVENT DETAILS MODAL -->
+    <div class="event-modal" id="eventModal">
+        <div class="event-modal-content">
+            <div class="modal-header">
+                <button class="close-btn" onclick="closeEventModal()">×</button>
+            </div>
+            <div class="swipe-area" id="swipeArea">
+                <div class="modal-cover" id="modalCover"></div>
+                <div class="modal-body">
+                    <h2 id="modalTitle">Event Name</h2>
+                    <div class="event-meta">
+                        <span id="modalDay">📅 Day</span>
+                        <span id="modalTime">⏰ Time</span>
+                        <span id="modalFee">🎟️ Fee</span>
+                    </div>
+                    <p class="event-desc" id="modalDesc">Description</p>
+                    <button class="primary-btn" style="width:100%;" onclick="openRegPopup(currentModalIdx)" id="modalRegBtn">Register Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- REGISTRATION POPUP -->
+    <div class="reg-popup" id="regPopup">
+        <div class="form-card">
+            <h3>Mission Registry</h3>
+            <p style="text-align:center; color:#aaa; margin-bottom:20px; font-size:14px;" id="regEventName">Registering for...</p>
+            <form id="registrationForm" onsubmit="submitRegistration(event)">
+                <div class="form-group">
+                    <input type="text" id="regName" placeholder="Astronaut Name">
+                </div>
+                <div class="form-group">
+                    <input type="email" id="regEmail" placeholder="Communication Email">
+                </div>
+                <div class="form-group">
+                    <input type="tel" id="regPhone" placeholder="Comlink Frequency (Phone)">
+                </div>
+                <div class="error-msg" id="regError">⚠️ All fields are required to proceed.</div>
+                <div class="form-actions">
+                    <button type="button" class="btn-back" onclick="closeRegPopup()">Back</button>
+                    <button type="submit" class="btn-submit">Confirm Setup</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- CONNECT WITH US -->
+    <section id="contact">
+        <h2 class="title">Connect With Us</h2>
+        <div class="coordinators-grid" style="margin-top:40px; max-width:900px;">
+            <div class="coord-card">
+                <h3>Nekha Ramesh</h3>
+                <p>Joint Secretary</p>
+                <a href="tel:+917306238791" class="coord-phone">📞 +91 73062 38791</a>
+            </div>
+            <div class="coord-card">
+                <h3>Alias Gigi</h3>
+                <p>Joint Secretary</p>
+                <a href="tel:+918848080507" class="coord-phone">📞 +91 88480 80507</a>
+            </div>
+            <div class="coord-card">
+                <h3>Peter Francis</h3>
+                <p>Technical Coordinator</p>
+                <a href="tel:+919072860801" class="coord-phone">📞 +91 90728 60801</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- NOTIFICATION -->
+    <div id="notification">Action Successful!</div>
+
+    <script>
+        /* === EVENT DATA === */
+        const eventsData = [
+            {
+                id: 0, title: 'Cyber Security', day: 'Day 1 – Forenoon', time: 'Forenoon', fee: 'TBA',
+                desc: 'Test your skills in ethical hacking, CTF challenges, and network security. Defend and attack in a controlled environment with real-world scenarios.',
+                gradient: 'linear-gradient(135deg, #00e5ff, #0072ff)',
+                iconSvg: `<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`
+            },
+            {
+                id: 1, title: 'Web Development', day: 'Day 1 – Forenoon', time: 'Forenoon', fee: 'TBA',
+                desc: 'Design and build stunning, functional web applications in a timed challenge. Creativity, speed, and clean code will determine the winner.',
+                gradient: 'linear-gradient(135deg, #38ef7d, #11998e)',
+                iconSvg: `<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>`
+            },
+            {
+                id: 2, title: 'Line Follower Robot', day: 'Day 1 – Forenoon', time: 'Forenoon', fee: 'TBA',
+                desc: 'Build an autonomous robot that navigates a track by following a line. Precision engineering and smart algorithms decide who crosses the finish line first.',
+                gradient: 'linear-gradient(135deg, #ff416c, #ff4b2b)',
+                iconSvg: `<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16"/><line x1="16" y1="16" x2="16" y2="16"/></svg>`
+            },
+            {
+                id: 3, title: 'Main Project Expo', day: 'Day 1 – Afternoon', time: 'Parallel Event', fee: 'TBA',
+                desc: 'Showcase your major projects to judges and peers. Running in parallel with afternoon sessions, this expo celebrates the best of student innovation.',
+                gradient: 'linear-gradient(135deg, #f7b733, #d35400)',
+                iconSvg: `<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`
+            },
+            {
+                id: 4, title: 'Hackathon', day: 'Day 1 – 5:00 PM', time: '5:00 PM (24 hrs)', fee: 'TBA',
+                desc: 'A 24-hour coding marathon starting at 5 PM. Form a crew, solve real-world problems, and build something remarkable before the clock runs out.',
+                gradient: 'linear-gradient(135deg, #c471f5, #fa71cd)',
+                iconSvg: `<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="10 10 8 12 10 14"/><polyline points="14 10 16 12 14 14"/><path d="M20 16V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9m16 0H4m16 0 1.28 2.55a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45L4 16"/></svg>`
+            },
+            {
+                id: 5, title: 'Mini Project Expo', day: 'Day 2 – Morning', time: 'Morning', fee: 'TBA',
+                desc: 'Present your small-scale projects and prototypes. An open floor for creative ideas and hands-on builds across any tech domain.',
+                gradient: 'linear-gradient(135deg, #ffd700, #ff8c00)',
+                iconSvg: `<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>`
+            },
+            {
+                id: 6, title: 'Business Proposal', day: 'Day 2 – Afternoon', time: 'Afternoon', fee: 'TBA',
+                desc: 'Pitch your startup concept to a panel of evaluators. Demonstrate market potential, technical feasibility, and your vision for the future.',
+                gradient: 'linear-gradient(135deg, #00c6ff, #0072ff)',
+                iconSvg: `<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>`
+            },
+            {
+                id: 7, title: 'Circuit Competition', day: 'Day 2 – Afternoon', time: 'Afternoon', fee: 'TBA',
+                desc: 'Design, troubleshoot, and build electronic circuits under time pressure. From basic logic to complex analog designs — let your circuitry speak.',
+                gradient: 'linear-gradient(135deg, #ff416c, #ff4b2b)',
+                iconSvg: `<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg>`
+            }
+        ];
+
+        let currentModalIdx = 0;
+
+        /* === LOADER === */
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const loader = document.getElementById("loader");
+                loader.style.opacity = "0";
+                setTimeout(() => { loader.style.display = "none"; }, 500);
+            }, 2000);
+            renderEventsGrid();
+        });
+
+        function scrollBrochure() {
+            document.getElementById("brochure").scrollIntoView({ behavior: 'smooth' });
+        }
+
+        /* === STARFIELD === */
+        const canvas = document.getElementById("stars");
+        const ctx = canvas.getContext("2d");
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const stars = [];
+        for (let i = 0; i < 50; i++) {
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                r: Math.random() * 1.5,
+                speed: Math.random() * 0.5 + 0.1
+            });
+        }
+
+        function drawStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "white";
+            stars.forEach(s => {
+                ctx.fillRect(s.x, s.y, s.r * 2, s.r * 2);
+                s.y -= s.speed;
+                if (s.y < 0) s.y = canvas.height;
+            });
+            requestAnimationFrame(drawStars);
+        }
+        drawStars();
+
+        /* === RENDER EVENTS GRID === */
+        function renderEventsGrid() {
+            const grid = document.getElementById('eventsGrid');
+            grid.innerHTML = '';
+            eventsData.forEach((ev, index) => {
+                const card = document.createElement('div');
+                card.className = 'event-card';
+                card.innerHTML = `
+                    <div class="card-cover" style="background: ${ev.gradient}">${ev.iconSvg}</div>
+                    <div class="card-body">
+                        <h3>${ev.title}</h3>
+                        <p class="card-meta">${ev.day} &nbsp;•&nbsp; ${ev.time}</p>
+                        ${(ev.id !== 3 && ev.id !== 5) ? `<button class="btn-register-card" onclick="openRegPopup(${index}); event.stopPropagation();">Register</button>` : ''}
+                    </div>
+                `;
+                card.addEventListener('click', () => openEventModal(index));
+                grid.appendChild(card);
+            });
+        }
+
+        /* === EVENT MODAL === */
+        const eventModal = document.getElementById('eventModal');
+
+        function openEventModal(index) {
+            currentModalIdx = index;
+            updateModalContent();
+            eventModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeEventModal() {
+            eventModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function updateModalContent() {
+            const ev = eventsData[currentModalIdx];
+            const cover = document.getElementById('modalCover');
+            cover.innerHTML = ev.iconSvg;
+            cover.style.background = ev.gradient;
+            document.getElementById('modalTitle').innerText = ev.title;
+            document.getElementById('modalDay').innerText = '📅 ' + ev.day;
+            document.getElementById('modalTime').innerText = '⏰ ' + ev.time;
+            document.getElementById('modalFee').innerText = '🎟️ ' + ev.fee;
+            document.getElementById('modalDesc').innerText = ev.desc;
+            document.getElementById('modalRegBtn').style.display = (ev.id === 3 || ev.id === 5) ? 'none' : 'block';
+        }
+
+        /* === REGISTRATION === */
+        const regPopup = document.getElementById('regPopup');
+
+        function openRegPopup(idx) {
+            if (idx !== undefined) currentModalIdx = idx;
+            const ev = eventsData[currentModalIdx];
+            document.getElementById('regEventName').innerText = "Mission: " + ev.title;
+            document.getElementById('regError').style.display = 'none';
+            regPopup.classList.add('active');
+        }
+
+        function closeRegPopup() {
+            regPopup.classList.remove('active');
+        }
+
+        function submitRegistration(e) {
+            e.preventDefault();
+            const name = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const phone = document.getElementById('regPhone').value.trim();
+            const errorMsg = document.getElementById('regError');
+
+            if (!name || !email || !phone) {
+                errorMsg.style.display = 'block';
+                return;
+            }
+
+            errorMsg.style.display = 'none';
+            document.getElementById('registrationForm').reset();
+            closeRegPopup();
+            closeEventModal();
+            showNotification('Registered for ' + eventsData[currentModalIdx].title + '! 🚀');
+        }
+
+        function showNotification(msg) {
+            const n = document.getElementById('notification');
+            n.innerText = msg;
+            n.classList.add('show');
+            setTimeout(() => n.classList.remove('show'), 3000);
+        }
+
+        window.onclick = function(event) {
+            if (event.target === eventModal) closeEventModal();
+            if (event.target === regPopup) closeRegPopup();
+        };
+
+        /* === PARALLAX PLANETS === */
+        const planetEls = [
+            { el: document.querySelector('.planet1'), speedX: 0.03, speedY: 0.02 },
+            { el: document.querySelector('.planet2'), speedX: -0.04, speedY: 0.03 },
+        ];
+
+        let mouseX = 0, mouseY = 0;
+        let scrollY = 0;
+
+        window.addEventListener('mousemove', e => {
+            mouseX = (e.clientX - window.innerWidth / 2);
+            mouseY = (e.clientY - window.innerHeight / 2);
+        });
+
+        window.addEventListener('scroll', () => {
+            scrollY = window.scrollY;
+        });
+
+        function animatePlanets() {
+            planetEls.forEach(p => {
+                const tx = mouseX * p.speedX + scrollY * p.speedX * 0.5;
+                const ty = mouseY * p.speedY + scrollY * p.speedY * 0.8;
+                p.el.style.transform = `translate(${tx}px, ${ty}px)`;
+            });
+            requestAnimationFrame(animatePlanets);
+        }
+        animatePlanets();
+    </script>
+</body>
+</html>
