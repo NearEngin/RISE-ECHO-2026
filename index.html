@@ -365,7 +365,14 @@
         .card-meta {
             color: #666;
             font-size: 12px;
-            margin-bottom: 14px;
+            margin-bottom: 10px;
+        }
+
+        .card-desc {
+            color: #999;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 16px;
         }
 
         .btn-register-card {
@@ -816,13 +823,22 @@
             <p style="text-align:center; color:#aaa; margin-bottom:20px; font-size:14px;" id="regEventName">Registering for...</p>
             <form id="registrationForm" onsubmit="submitRegistration(event)">
                 <div class="form-group">
-                    <input type="text" id="regName" placeholder="Astronaut Name">
+                    <input type="text" id="regName" placeholder="Full Name">
                 </div>
                 <div class="form-group">
-                    <input type="email" id="regEmail" placeholder="Communication Email">
+                    <input type="email" id="regEmail" placeholder="Email Address">
                 </div>
                 <div class="form-group">
-                    <input type="tel" id="regPhone" placeholder="Comlink Frequency (Phone)">
+                    <input type="tel" id="regPhone" placeholder="Phone Number">
+                </div>
+                <div class="form-group">
+                    <input type="text" id="regCollege" placeholder="College / Institution">
+                </div>
+                <div class="form-group">
+                    <input type="text" id="regDept" placeholder="Department / Course">
+                </div>
+                <div class="form-group">
+                    <input type="text" id="regYear" placeholder="Year of Study">
                 </div>
                 <div class="error-msg" id="regError">⚠️ All fields are required to proceed.</div>
                 <div class="form-actions">
@@ -863,49 +879,49 @@
         const eventsData = [
             {
                 id: 0, title: 'Cyber Security', day: 'Day 1 – Forenoon', time: 'Forenoon', fee: 'TBA',
-                desc: 'Test your skills in ethical hacking, CTF challenges, and network security. Defend and attack in a controlled environment with real-world scenarios.',
+                desc: 'Dive into the world of ethical hacking, CTF challenges, and network defense in a high-stakes competition environment. Prove your skills in identifying vulnerabilities and securing systems before the clock runs out.',
                 gradient: 'linear-gradient(135deg, #00e5ff, #0072ff)',
                 iconSvg: `<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`
             },
             {
                 id: 1, title: 'Web Development', day: 'Day 1 – Forenoon', time: 'Forenoon', fee: 'TBA',
-                desc: 'Design and build stunning, functional web applications in a timed challenge. Creativity, speed, and clean code will determine the winner.',
+                desc: 'Design and build a fully functional, visually stunning website within a tight time limit. Creativity, responsiveness, and clean code will be judged by a panel of industry experts.',
                 gradient: 'linear-gradient(135deg, #38ef7d, #11998e)',
                 iconSvg: `<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>`
             },
             {
                 id: 2, title: 'Line Follower Robot', day: 'Day 1 – Forenoon', time: 'Forenoon', fee: 'TBA',
-                desc: 'Build an autonomous robot that navigates a track by following a line. Precision engineering and smart algorithms decide who crosses the finish line first.',
+                desc: 'Build an autonomous robot capable of navigating a track by detecting and following a line with precision. The fastest and most accurate bot to complete the course without going off-track wins.',
                 gradient: 'linear-gradient(135deg, #ff416c, #ff4b2b)',
                 iconSvg: `<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16"/><line x1="16" y1="16" x2="16" y2="16"/></svg>`
             },
             {
                 id: 3, title: 'Main Project Expo', day: 'Day 1 – Afternoon', time: 'Parallel Event', fee: 'TBA',
-                desc: 'Showcase your major projects to judges and peers. Running in parallel with afternoon sessions, this expo celebrates the best of student innovation.',
+                desc: 'Present your major engineering or technology project to a panel of judges and an enthusiastic audience. This is your stage to demonstrate months of hard work, innovation, and real-world problem-solving.',
                 gradient: 'linear-gradient(135deg, #f7b733, #d35400)',
                 iconSvg: `<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`
             },
             {
                 id: 4, title: 'Hackathon', day: 'Day 1 – 5:00 PM', time: '5:00 PM (24 hrs)', fee: 'TBA',
-                desc: 'A 24-hour coding marathon starting at 5 PM. Form a crew, solve real-world problems, and build something remarkable before the clock runs out.',
+                desc: 'A non-stop 24-hour coding marathon where teams race to build innovative solutions to real-world problems starting at 5 PM. Form your crew, fuel up, and code your way from idea to working prototype before time runs out.',
                 gradient: 'linear-gradient(135deg, #c471f5, #fa71cd)',
                 iconSvg: `<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="10 10 8 12 10 14"/><polyline points="14 10 16 12 14 14"/><path d="M20 16V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9m16 0H4m16 0 1.28 2.55a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45L4 16"/></svg>`
             },
             {
                 id: 5, title: 'Mini Project Expo', day: 'Day 2 – Morning', time: 'Morning', fee: 'TBA',
-                desc: 'Present your small-scale projects and prototypes. An open floor for creative ideas and hands-on builds across any tech domain.',
+                desc: 'Showcase your small-scale prototypes and creative tech builds to judges and fellow participants across any domain. A great platform to share early-stage ideas, receive feedback, and inspire the next wave of innovators.',
                 gradient: 'linear-gradient(135deg, #ffd700, #ff8c00)',
                 iconSvg: `<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>`
             },
             {
                 id: 6, title: 'Business Proposal', day: 'Day 2 – Afternoon', time: 'Afternoon', fee: 'TBA',
-                desc: 'Pitch your startup concept to a panel of evaluators. Demonstrate market potential, technical feasibility, and your vision for the future.',
+                desc: 'Pitch your startup idea to a panel of evaluators and demonstrate its market potential, technical feasibility, and scalability. The most compelling and well-structured proposal will walk away with top honours.',
                 gradient: 'linear-gradient(135deg, #00c6ff, #0072ff)',
                 iconSvg: `<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>`
             },
             {
                 id: 7, title: 'Circuit Competition', day: 'Day 2 – Afternoon', time: 'Afternoon', fee: 'TBA',
-                desc: 'Design, troubleshoot, and build electronic circuits under time pressure. From basic logic to complex analog designs — let your circuitry speak.',
+                desc: 'Design, assemble, and troubleshoot electronic circuits under pressure in a timed challenge spanning analog, digital, and logic domains. Only those with sharp minds and steady hands will make it to the top.',
                 gradient: 'linear-gradient(135deg, #ff416c, #ff4b2b)',
                 iconSvg: `<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg>`
             }
@@ -971,7 +987,8 @@
                     <div class="card-cover" style="background: ${ev.gradient}">${ev.iconSvg}</div>
                     <div class="card-body">
                         <h3>${ev.title}</h3>
-                        <p class="card-meta">${ev.day} &nbsp;•&nbsp; ${ev.time}</p>
+                        <p class="card-meta">${ev.day}</p>
+                        <p class="card-desc">${ev.desc}</p>
                         ${(ev.id !== 3 && ev.id !== 5) ? `<button class="btn-register-card" onclick="openRegPopup(${index}); event.stopPropagation();">Register</button>` : ''}
                     </div>
                 `;
@@ -1025,12 +1042,15 @@
 
         function submitRegistration(e) {
             e.preventDefault();
-            const name = document.getElementById('regName').value.trim();
-            const email = document.getElementById('regEmail').value.trim();
-            const phone = document.getElementById('regPhone').value.trim();
+            const name    = document.getElementById('regName').value.trim();
+            const email   = document.getElementById('regEmail').value.trim();
+            const phone   = document.getElementById('regPhone').value.trim();
+            const college = document.getElementById('regCollege').value.trim();
+            const dept    = document.getElementById('regDept').value.trim();
+            const year    = document.getElementById('regYear').value.trim();
             const errorMsg = document.getElementById('regError');
 
-            if (!name || !email || !phone) {
+            if (!name || !email || !phone || !college || !dept || !year) {
                 errorMsg.style.display = 'block';
                 return;
             }
